@@ -1,0 +1,14 @@
+{
+    "require": {
+        "slim/slim": "3.9.0",
+        "slim/csrf": "0.8.1",
+        "slim/flash": "0.2.0",
+        "monolog/monolog": "1.23.0",
+        "ramsey/uuid": "3.7.1",
+        "slim/pdo": "~1.10",
+        "twig/twig": "*"
+    },
+    "autoload": {
+        "classmap": ["constructr_controller/"]
+    }
+}

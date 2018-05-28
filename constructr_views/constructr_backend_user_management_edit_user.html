@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Backend | ConstructrCMS</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    </head>
+    <body>
+
+      <div class="navbar-fixed mbt50">
+        <nav>
+          <div class="nav-wrapper grey darken-4">
+          <a href="#" data-activates="mobile" class="button-collapse"><i class="material-icons left">menu</i></a>
+            <ul class="left hide-on-med-and-down">
+              <li>&#160;&#160;&#160;</li>
+              <li><a href="{{ BASE_URL }}/constructr/api-management"><i class="material-icons left">view_quilt</i>APIs</a></li>
+              <li><a href="{{ BASE_URL }}/constructr/user-management"><i class="material-icons left">portrait</i>Constructr Benutzer</a></li>
+            </ul>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <li><a class="tooltipped" data-position="left" data-delay="25" data-tooltip="{{ USERNAME }} logout?" href="{{ BASE_URL }}/constructr/logout"><i class="material-icons">power_settings_new</i></a></li>
+              <li>&#160;&#160;&#160;</li>
+            </ul>
+            <ul class="side-nav" id="mobile">
+              <li><a href="{{ BASE_URL }}/constructr/api-management"><i class="material-icons left">view_quilt</i>APIs</a></li>
+              <li><a href="{{ BASE_URL }}/constructr/user-management"><i class="material-icons left">portrait</i>Constructr Benutzer</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="container" style="margin-top:150px;">
+        <p class="flow-text center-align">Constructr Benutzer "{{ EDIT_USER_USERNAME }}" editieren</p>
+        <!--User Table START-->
+        <div class="row form-row">
+    			<form name="user_edit_form" id="user_edit_form" action="{{ BASE_URL}}//constructr/user-management/edit/{{ EDIT_USER_ID }}" method="post" enctype="application/x-www-form-urlencoded" class="col s12" autocomplete="off">
+            <input type="hidden" name="{{ NAME_KEY }}" value="{{ NAME }}">
+    				<input type="hidden" name="{{ VALUE_KEY }}" value="{{ VALUE }}">
+            {% if EDIT_USER_ACTIVE == 1 %}
+            <div class="center-align">
+              <p class="center-align">Benutzer {{ EDIT_USER_USERNAME }} aktiv?</p>
+              <div class="switch">
+                <label>
+                  Inaktiv
+                  <input type="checkbox" name="user_active" id="user_active" checked="checked">
+                  <span class="lever"></span>
+                  Aktiv
+                </label>
+              </div>
+    				</div>
+            {% else %}
+            <div class="center-align">
+              <p>Benutzer {{ EDIT_USER_USERNAME }} aktiv?</p>
+              <div class="switch">
+                <label>
+                  Inaktiv
+                  <input type="checkbox" name="user_active" id="user_active">
+                  <span class="lever"></span>
+                  Aktiv
+                </label>
+              </div>
+    				</div>
+            {% endif %}
+            <div class="input-field col s12">
+    					<input type="number" id="user_id" name="user_id" value="{{ EDIT_USER_ID }}" readonly="readonly" required="required">
+    					<label>ID:</label>
+    				</div>
+            <div class="input-field col s12">
+              <input type="text" id="username" name="username" value="{{ EDIT_USER_USERNAME }}" placeholder="Username" required="required" autofocus="autofocus">
+              <label>Username:</label>
+            </div>
+            <div class="input-field col s12">
+    					<input type="text" id="email" name="email" value="{{ EDIT_USER_EMAIL }}" placeholder="eMail">
+    					<label>eMail:</label>
+    				</div>
+            <div class="input-field col s12">
+    					<input type="password" id="new_password" name="new_password" value="" placeholder="Neues Passwort">
+    					<label>Neues Passwort:</label>
+    				</div>
+            <div class="input-field col s12">
+              <input type="password" id="new_password_retype" name="new_password_retype" value="" placeholder="Neues Passwort - Wiederholung">
+              <label>Neues Passwort - Wiederholung:</label>
+            </div>
+    				<div class="input-field col s6">
+    					<button class="btn waves-effect waves-light" type="submit" name="action">Update &gt;</button>
+    				</div>
+    			</form>
+    		</div>
+        <!--USER TABLE END-->
+
+        <p><small>Aktueller Benutzer: <strong>{{ USERNAME }}</strong> (Login am {{ USER_LAST_LOGIN }} Uhr)</small></p>
+    	</div>
+
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+      <script>
+
+        $(function()
+          {
+            $(".button-collapse").sideNav();
+
+            $(document).keyup((e) =>
+              {
+                if (27 === e.which)
+                {
+                  javascript:history.back();
+                }
+              }
+            );
+
+            $("#username").focus();
+
+            function autoBlinder()
+            {
+                $('.card-panel').fadeOut();
+            }
+
+            setInterval(autoBlinder,4500);
+
+            $('#user_edit_form').bind('submit', () =>
+              {
+                let U = $('#username').val();
+                let E = $('#email').val();
+                let P = $('#new_password').val();
+                let PRT = $('#new_password_retype').val();
+
+                if('undefined' === typeof U || '' == U || 'undefined' === typeof E || '' == E)
+                {
+                  return false;
+                }
+                else
+                {
+                  if('' != P)
+                  {
+                    if(P == PRT)
+                    {
+                      return true;
+                    }
+                    else
+                    {
+                      alert("Pasword mismatch (New Passwort != New Passwort Retype)");
+                      $('#new_password').val('');
+                      $('#new_password_retype').val('');
+                      $('#new_password').focus();
+                      return false;
+                    }
+                  }
+                }
+              }
+            );
+
+          }
+        );
+
+      </script>
+    </body>
+</html>

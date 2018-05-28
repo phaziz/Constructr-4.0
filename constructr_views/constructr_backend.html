@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Backend | ConstructrCMS</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    </head>
+    <body>
+
+      <div class="navbar-fixed mbt50">
+        <nav>
+          <div class="nav-wrapper grey darken-4">
+          <a href="#" data-activates="mobile" class="button-collapse"><i class="material-icons left">menu</i></a>
+            <ul class="left hide-on-med-and-down">
+              <li>&#160;&#160;&#160;</li>
+              <li><a href="{{ BASE_URL }}/constructr/api-management"><i class="material-icons left">view_quilt</i>APIs</a></li>
+              <li><a href="{{ BASE_URL }}/constructr/user-management"><i class="material-icons left">portrait</i>Constructr Benutzer</a></li>
+            </ul>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <li><a class="tooltipped" data-position="left" data-delay="25" data-tooltip="{{ USERNAME }} logout?" href="{{ BASE_URL }}/constructr/logout"><i class="material-icons">power_settings_new</i></a></li>
+              <li>&#160;&#160;&#160;</li>
+            </ul>
+            <ul class="side-nav" id="mobile">
+              <li><a href="{{ BASE_URL }}/constructr/api-management"><i class="material-icons left">view_quilt</i>APIs</a></li>
+              <li><a href="{{ BASE_URL }}/constructr/user-management"><i class="material-icons left">portrait</i>Constructr Benutzer</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <div class="container" style="margin-top:150px;">
+
+    	</div>
+
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+      <script>
+
+        $(function()
+        {
+          $(".button-collapse").sideNav();
+        });
+
+      </script>
+    </body>
+</html>

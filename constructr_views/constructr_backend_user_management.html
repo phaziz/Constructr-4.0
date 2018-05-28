@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Backend | ConstructrCMS</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    </head>
+    <body>
+
+      <div class="navbar-fixed mbt50">
+        <nav>
+          <div class="nav-wrapper grey darken-4">
+          <a href="#" data-activates="mobile" class="button-collapse"><i class="material-icons left">menu</i></a>
+            <ul class="left hide-on-med-and-down">
+              <li>&#160;&#160;&#160;</li>
+              <li><a href="{{ BASE_URL }}/constructr/api-management"><i class="material-icons left">view_quilt</i>APIs</a></li>
+              <li><a href="{{ BASE_URL }}/constructr/user-management"><i class="material-icons left">portrait</i>Constructr Benutzer</a></li>
+            </ul>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <li><a class="tooltipped" data-position="left" data-delay="25" data-tooltip="{{ USERNAME }} logout?" href="{{ BASE_URL }}/constructr/logout"><i class="material-icons">power_settings_new</i></a></li>
+              <li>&#160;&#160;&#160;</li>
+            </ul>
+            <ul class="side-nav" id="mobile">
+              <li><a href="{{ BASE_URL }}/constructr/api-management"><i class="material-icons left">view_quilt</i>APIs</a></li>
+              <li><a href="{{ BASE_URL }}/constructr/user-management"><i class="material-icons left">portrait</i>Constructr Benutzer</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="container" style="margin-top:150px;">
+        {% if MESSAGE %}
+          <div class="card-panel green darken-3 white-text">{{ MESSAGE|raw }}</div>
+          <br><br>
+        {% endif %}
+        <p class="flow-text center-align">Benutzer&#160;|&#160;<a href="{{ BASE_URL }}/constructr/user-management/new-user" class="waves-effect waves-light">+</a></p>
+
+        <!--User Table START-->
+          {% if USER_COUNTR > 0 %}
+
+          <table class="bordered hoverable">
+              <thead>
+                  <tr>
+                    <th data-field="Benutzername">Benutzername</th>
+                    <th data-field="ID">ID</th>
+                    <th data-field="eMail">eMail</th>
+                    <th data-field="Aktionen" class="center-align" style="width:150px">Aktionen</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for SINGLE_USER in ALL_USER %}
+                  <tr>
+                    <td><small>{{ SINGLE_USER.constructr_backenduser_username }}<small></td>
+                    <td><small>{{ SINGLE_USER.constructr_backenduser_id }}<small></td>
+                    <td><small>{{ SINGLE_USER.constructr_backenduser_email }}</small></td>
+                    <td class="center-align">
+                      <a href="{{ BASE_URL}}/constructr/user-management/edit/{{ SINGLE_USER.constructr_backenduser_id }}" data-position="left" data-delay="25" data-tooltip="Benutzer {{ SINGLE_USER.constructr_backenduser_username }} editieren" class="tooltipped"><i class="material-icons">mode_edit</i></a>
+                      <a href="{{ BASE_URL}}/constructr/user-management/delete-user/{{ SINGLE_USER.constructr_backenduser_id }}" data-position="left" data-delay="25" data-tooltip="Benutzer {{ SINGLE_USER.constructr_backenduser_username }} löschen" class="deleter tooltipped"><i class="material-icons">delete</i></a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+          {% endif %}
+
+        <!--USER TABLE END-->
+
+        <p><small>Aktueller Benutzer: <strong>{{ USERNAME }}</strong> (Login am {{ USER_LAST_LOGIN }} Uhr)</small></p>
+    	</div>
+
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+      <script>
+
+        $(function()
+          {
+            $(".button-collapse").sideNav();
+
+            $(document).keyup((e) => 
+              {
+                if (27 === e.which)
+                {
+                  javascript:history.back();
+                }
+              }
+            );
+
+            function autoBlinder()
+            {
+                $('.card-panel').fadeOut();
+            }
+
+            setInterval(autoBlinder,4500);
+
+            $('.deleter').click((e) =>
+              {
+                if (confirm('Wirklich den Benutzer löschen?'))
+                {
+                   $(location).attr('href',$(this).attr('href'));
+                }
+                else
+                {
+                   return false;
+                }
+              }
+            );
+
+          }
+        );
+
+      </script>
+    </body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Backend | ConstructrCMS</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    </head>
+    <body>
+
+      <div class="navbar-fixed mbt50">
+        <nav>
+          <div class="nav-wrapper grey darken-4">
+          <a href="#" data-activates="mobile" class="button-collapse"><i class="material-icons left">menu</i></a>
+            <ul class="left hide-on-med-and-down">
+              <li>&#160;&#160;&#160;</li>
+              <li><a href="{{ BASE_URL }}/constructr/api-management"><i class="material-icons left">view_quilt</i>APIs</a></li>
+              <li><a href="{{ BASE_URL }}/constructr/user-management"><i class="material-icons left">portrait</i>Constructr Benutzer</a></li>
+            </ul>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <li><a class="tooltipped" data-position="left" data-delay="25" data-tooltip="{{ USERNAME }} logout?" href="{{ BASE_URL }}/constructr/logout"><i class="material-icons">power_settings_new</i></a></li>
+              <li>&#160;&#160;&#160;</li>
+            </ul>
+            <ul class="side-nav" id="mobile">
+              <li><a href="{{ BASE_URL }}/constructr/api-management"><i class="material-icons left">view_quilt</i>APIs</a></li>
+              <li><a href="{{ BASE_URL }}/constructr/user-management"><i class="material-icons left">portrait</i>Constructr Benutzer</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="container" style="margin-top:150px;">
+        {% if MESSAGE %}
+          <div class="card-panel green darken-3 white-text">{{ MESSAGE|raw }}</div>
+          <br><br>
+        {% endif %}
+        <p class="flow-text center-align">Neuer Constructr Benutzer</p>
+        <!--User Table START-->
+        <div class="row form-row">
+    			<form name="new_user_form" id="new_user_form" action="{{ BASE_URL}}/constructr/user-management/insert-new-user" method="post" enctype="application/x-www-form-urlencoded" class="col s12" autocomplete="off">
+            <input type="hidden" name="{{ NAME_KEY }}" value="{{ NAME }}">
+    				<input type="hidden" name="{{ VALUE_KEY }}" value="{{ VALUE }}">
+            <div class="input-field col s12">
+              <input type="text" id="username" name="username" value="" placeholder="Username" required="required" autofocus="autofocus">
+              <label>Username:</label>
+            </div>
+            <div class="input-field col s12">
+    					<input type="text" id="email" name="email" value="" placeholder="eMail">
+    					<label>eMail:</label>
+    				</div>
+            <div class="input-field col s12">
+    					<input type="password" id="password" name="password" value="" placeholder="Neues Passwort">
+    					<label>Neues Passwort:</label>
+    				</div>
+            <div class="input-field col s12">
+              <input type="password" id="password_retype" name="password_retype" value="" placeholder="Neues Passwort - Wiederholung">
+              <label>Neues Passwort - Wiederholung:</label>
+            </div>
+    				<div class="input-field col s6">
+    					<button class="btn waves-effect waves-light" type="submit" name="action">Speichern &gt;</button>
+    				</div>
+    			</form>
+    		</div>
+        <!--USER TABLE END-->
+    	</div>
+
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+      <script>
+
+        $(function()
+          {
+            $(".button-collapse").sideNav();
+
+            $(document).keyup((e) =>
+              {
+                if (27 === e.which)
+                {
+                  javascript:history.back();
+                }
+              }
+            );
+
+            $("#username").focus();
+
+            function autoBlinder()
+            {
+                $('.card-panel').fadeOut();
+            }
+
+            setInterval(autoBlinder,4500);
+
+            $('#new_user_form').bind('submit',() =>
+              {
+                let U = $('#username').val();
+                let E = $('#email').val();
+                let P = $('#password').val();
+                let PRT = $('#password_retype').val();
+
+                if('undefined' === typeof U || '' == U || 'undefined' === typeof E || '' == E)
+                {
+                  return false;
+                }
+                else
+                {
+                  if('' != P)
+                  {
+                    if(P == PRT)
+                    {
+                      return true;
+                    }
+                    else
+                    {
+                      alert("Pasword mismatch (New Passwort != New Passwort Retype)");
+                      $('#password').val('');
+                      $('#password_retype').val('');
+                      $('#password').focus();
+                      return false;
+                    }
+                  }
+                }
+              }
+            );
+
+          }
+        );
+
+      </script>
+    </body>
+</html>
