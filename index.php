@@ -7,15 +7,12 @@
 
   use Monolog\Logger;
   use Monolog\Handler\StreamHandler;
-
   use \Psr\Http\Message\ServerRequestInterface as Request;
   use \Psr\Http\Message\ResponseInterface as Response;
-
   use Ramsey\Uuid\Uuid;
   use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
   $app = new \Slim\App($config);
-
   $container = $app -> getContainer();
 
   $container['logger'] = function($config)
@@ -117,40 +114,8 @@
         -> write($notFoundPage);
     };
   };
-/*
-  $container['notAllowedHandler'] = function ($container)
-  {
-    return function ($request, $response) use ($container)
-    {
-      $notAllowedPage = file_get_contents(__DIR__ . '/constructr_views/constructr_405.html');
-      $container['logger'] -> addInfo('405');
-
-      return $container['response']
-        -> withStatus(405)
-        -> withHeader('Content-Type', 'text/html')
-        -> write($notAllowedPage);
-    };
-  };
-
-  $container['phpErrorHandler'] = function ($container)
-  {
-    return function ($request, $response) use ($container)
-    {
-      $errorPage = file_get_contents(__DIR__ . '/constructr_views/constructr_error.html');
-      $container['logger'] -> addInfo('500');
-
-      return $container['response']
-        -> withStatus(500)
-        -> withHeader('Content-Type', 'text/html')
-        -> write($errorPage);
-    };
-  };
-
-
 
   /************************************************************ROUTING************************************************************/
-
-
 
   $app->get('/', function ($request, $response, $args) use ($app)
     {
@@ -166,8 +131,6 @@
         }
     }
   );
-
-
 
   $app -> get('/login', function ($request, $response, $args) use ($app)
     {
@@ -185,8 +148,6 @@
       }
     }
   ) -> add( $container -> get('csrf') );
-
-
 
   $app -> post('/login-step-1', function ($request, $response, $args) use ($app)
     {
@@ -206,8 +167,6 @@
     }
   );
 
-
-
   $app -> get('/login-step-2', function ($request, $response, $args) use ($app)
     {
       $settings = $this -> get('settings');
@@ -224,8 +183,6 @@
       }
     }
   ) -> add($container -> get('csrf'));
-
-
 
   $app -> post('/login-step-2', function ($request, $response, $args) use ($app)
     {
